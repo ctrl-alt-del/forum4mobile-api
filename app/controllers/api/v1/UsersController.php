@@ -19,7 +19,68 @@ class UsersController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		$rules = array(
+			'name'	   => 'required|alphaNum|min:5',
+			'email'    => 'required|email', 
+			'password' => 'required|alphaNum|min:6' 
+			);
+
+		// run the validation rules on the inputs from the form
+		$validator = Validator::make(Input::all(), $rules);
+
+		// if the validator fails, redirect back to the form
+		if ($validator->fails()) {
+			return Response::json(array(
+				'success'   => false,
+				'error'     => true,
+				'type'      => '403',
+				'message'   => $validator->message()->all(),
+				));
+		}
+		
+		$userWithGivenName = User::where('name','=', Input::get('name'))->first();
+		if ($userWithGivenName != null) {
+			return Response::json(array(
+				'success'   => false,
+				'error'     => true,
+				'type'      => '403',
+				'message'   => 'Name used',
+				));
+		}
+
+		$userWithGivenEmail = User::where('email','=', Input::get('email'))->first();
+		if ($userWithGivenEmail != null) {
+			return Response::json(array(
+				'success'   => false,
+				'error'     => true,
+				'type'      => '403',
+				'message'   => 'Email used',
+				));
+		}
+
+		// store
+		$user = new User;
+		$user->uuid 		= uniqid("", true);
+		$user->name  		= Input::get('name');
+		$user->email   		= Input::get('email');
+		$user->product_id 	= Input::get('product_id');
+		$user->helpful    	= Input::get('helpful');
+
+		if ($user->isSaved()) {
+			return Response::json(array(
+				'success'   => true,
+				'error'     => false,
+				'type'      => '201',
+				'message'   => 'new user has created',
+				));
+		} else {
+			return Response::json(array(
+				'success'   => false,
+				'error'     => true,
+				'type'      => '403',
+				'message'   => 'cannot create new user',
+				));
+		}
 	}
 
 

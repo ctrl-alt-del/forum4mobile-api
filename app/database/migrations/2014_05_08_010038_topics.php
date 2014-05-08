@@ -10,9 +10,20 @@ class Topics extends Migration {
 	 *
 	 * @return void
 	 */
-	public function up()
-	{
-		//
+	public function up() {
+		Schema::create('topics', function(Blueprint $table) {
+            $table->increments('id');
+            $table->String('title', 50);
+            $table->String('description', 100)->unique();
+            $table->String('content', 80);
+            $table->integer('user_id')->default(0)->unsigned();
+            $table->timestamps();
+
+            /* Do NOT do ->onDelete('cascade') in here because we want
+                to keep the topics that a person added even if he deletes
+                his account */
+            $table->foreign('user_id')->references('id')->on('users');
+        });
 	}
 
 	/**
@@ -20,9 +31,7 @@ class Topics extends Migration {
 	 *
 	 * @return void
 	 */
-	public function down()
-	{
-		//
+	public function down() {
+		Schema::drop('topics');
 	}
-
 }

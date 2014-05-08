@@ -10,9 +10,15 @@ class Users extends Migration {
 	 *
 	 * @return void
 	 */
-	public function up()
-	{
-		//
+	public function up() {
+        Schema::create('users', function(Blueprint $table) {
+            $table->increments('id');
+            $table->String('uuid', 23)->unique();
+            $table->String('name', 50);
+            $table->String('email', 100)->unique();
+            $table->String('password', 80);
+            $table->timestamps();
+        });
 	}
 
 	/**
@@ -20,9 +26,7 @@ class Users extends Migration {
 	 *
 	 * @return void
 	 */
-	public function down()
-	{
-		//
+	public function down() {
+        Schema::drop('users');
 	}
-
 }

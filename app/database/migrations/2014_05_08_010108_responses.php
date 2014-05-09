@@ -19,7 +19,7 @@ class Responses extends Migration {
 			$table->timestamps();
 
         	/* Do NOT do ->onDelete('cascade') in here because we want
-        	to keep the reviews that a person added even if he deletes
+        	to keep the responses that a person added even if he deletes
         	his account */
         	$table->foreign('user_id')->references('id')->on('users');
         	$table->foreign('topic_id')->references('id')->on('topics');
@@ -32,6 +32,6 @@ class Responses extends Migration {
 	 * @return void
 	 */
 	public function down() {
-		Schema::drop('reponses');
+		Schema::drop('responses');
 	}
 }

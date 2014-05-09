@@ -12,13 +12,15 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $table = 'users';
 
+	protected $appends = array('topics_count');
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 *
 	 * @var array
 	 */
-	protected $hidden = array('password');
+	protected $hidden = array('id', 'uuid', 'password');
 
+	
 	/**
 	 * Get the unique identifier for the user.
 	 *
@@ -80,4 +82,15 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return $this->email;
 	}
 
+	public function topics() {
+		return $this->hasMany('Topic');
+	}
+
+	public function includeTopics() {
+		$this->hidden = array_diff($this->hidden, array('topics'));
+	}
+
+	public function getTopicsCountAttribute() {
+        return count($this->topics);
+    }
 }

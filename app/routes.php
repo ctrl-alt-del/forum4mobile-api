@@ -42,3 +42,14 @@ Route::group(
 		Route::resource('votes', 'VotesController');
 	});
 
+/**
+* Redirect all the routes to 'api/v1'
+*
+* @since 2014-05-08
+* @version 2.0
+**/
+Route::any('{all}', function($path) {
+	if (!preg_match("/\bapi\/v1\b/i", $path)) {
+		return Redirect::to('api/v1/'.$path);
+	}
+})->where('all', '.*');

@@ -14,14 +14,14 @@ class Votes extends Migration {
 		Schema::create('votes', function(Blueprint $table) {
 			$table->increments('id');
 			$table->integer('user_id')->unsigned();
-			$table->integer('response_id')->unsigned();
+			$table->integer('review_id')->unsigned();
 			$table->timestamps();
 
         	/* Do NOT do ->onDelete('cascade') in here because we want
         	to keep the concerns that a person added even if he deletes
         	his account */
         	$table->foreign('user_id')->references('id')->on('users');
-        	$table->foreign('response_id')->references('id')->on('responses');
+        	$table->foreign('review_id')->references('id')->on('reviews');
         });
 	}
 

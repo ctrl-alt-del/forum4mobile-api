@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Responses extends Migration {
+class Reviews extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -11,7 +11,7 @@ class Responses extends Migration {
 	 * @return void
 	 */
 	public function up() {
-		Schema::create('responses', function(Blueprint $table) {
+		Schema::create('reviews', function(Blueprint $table) {
 			$table->increments('id');
 			$table->integer('user_id')->unsigned();
 			$table->integer('topic_id')->unsigned();
@@ -19,7 +19,7 @@ class Responses extends Migration {
 			$table->timestamps();
 
         	/* Do NOT do ->onDelete('cascade') in here because we want
-        	to keep the responses that a person added even if he deletes
+        	to keep the reviews that a person added even if he deletes
         	his account */
         	$table->foreign('user_id')->references('id')->on('users');
         	$table->foreign('topic_id')->references('id')->on('topics');
@@ -32,6 +32,6 @@ class Responses extends Migration {
 	 * @return void
 	 */
 	public function down() {
-		Schema::drop('responses');
+		Schema::drop('reviews');
 	}
 }

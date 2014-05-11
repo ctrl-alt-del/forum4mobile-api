@@ -7,11 +7,19 @@ class DatabaseSeeder extends Seeder {
 	 *
 	 * @return void
 	 */
-	public function run()
-	{
+	public function run() {
 		Eloquent::unguard();
+		$time_start = microtime(true);
 
-		// $this->call('UserTableSeeder');
+		$this->call('UsersTableSeeder');
+		$this->call('TopicsTableSeeder');
+		$this->call('ConcernsTableSeeder');
+		$this->call('ReviewsTableSeeder');
+		$this->call('VotesTableSeeder');
+
+		$time_end = microtime(true);
+		$duration = $time_end - $time_start;
+		echo "Populating database took: $duration seconds\n";
 	}
 
 }

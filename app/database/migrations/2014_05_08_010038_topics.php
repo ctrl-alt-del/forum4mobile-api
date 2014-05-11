@@ -14,7 +14,7 @@ class Topics extends Migration {
 		Schema::create('topics', function(Blueprint $table) {
             $table->increments('id');
             $table->String('title', 50);
-            $table->String('description', 100)->unique();
+            $table->String('description', 100);
             $table->String('content', 80);
             $table->integer('user_id')->default(0)->unsigned();
             $table->timestamps();

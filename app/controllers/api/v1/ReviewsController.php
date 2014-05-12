@@ -9,6 +9,7 @@ class ReviewsController extends \BaseController {
 	 * @return Response
 	 */
 	public function index() {
+		return Response::json(Review::all());
 	}
 
 	/**

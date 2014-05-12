@@ -8,6 +8,7 @@ class VotesController extends \BaseController {
 	 * @return Response
 	 */
 	public function index() {
+		return Response::json(Vote::all());
 	}
 
 	/**

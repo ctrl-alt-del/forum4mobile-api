@@ -9,7 +9,11 @@ class UsersController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+		// return Response::json(array(
+		// 	'error' => true,
+		// 	'type' => '404',
+		// 	));
+		return Response::json(User::all());
 	}
 
 	/**

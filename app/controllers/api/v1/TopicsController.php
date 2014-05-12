@@ -8,6 +8,7 @@ class TopicsController extends \BaseController {
 	 * @return Response
 	 */
 	public function index() {
+		return Response::json(Topic::all());
 	}
 
 	/**

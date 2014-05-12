@@ -17,6 +17,54 @@ class VotesController extends \BaseController {
 	 * @return Response
 	 */
 	public function store() {
+		$rules = array(
+			'review_id'	=> 'required',
+			'user_id' 	=> 'required'
+			);
+
+		// run the validation rules on the inputs from the form
+		$validator = Validator::make(Input::all(), $rules);
+
+		// if the validator fails, redirect back to the form
+		if ($validator->fails()) {
+			return Response::json(array(
+				'success'   => false,
+				'error'     => true,
+				'type'      => '403',
+				'message'   => $validator->message()->all(),
+				));
+		}
+
+		$vote = Vote::where('user_id','=',Input::get('user_id'))->where('review_id','=',Input::get('review_id'))->first();
+		if ($vote != null) {
+			return Response::json(array(
+				'success'   => false,
+				'error'     => true,
+				'type'      => '403',
+				'message'   => 'you voted',
+				));
+		}
+
+		// store
+		$vote = new Vote;
+		$vote->review_id   	= Input::get('review_id');
+		$vote->user_id   	= Input::get('user_id');
+
+		if ($vote->save()) {
+			return Response::json(array(
+				'success'   => true,
+				'error'     => false,
+				'type'      => '201',
+				'message'   => 'new vote has created',
+				));
+		} else {
+			return Response::json(array(
+				'success'   => false,
+				'error'     => true,
+				'type'      => '403',
+				'message'   => 'cannot create new vote',
+				));
+		}
 	}
 
 

@@ -94,9 +94,17 @@ class UsersController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
-	{
-		//
+	public function show($id) {
+		$user = User::find($id);
+		if ($user == null) {
+			return Response::json(array(
+				'success'   => false,
+				'error'     => true,
+				'type'      => '403',
+				'message'   => 'no user',
+				));
+		}
+		return Response::json($user);
 	}
 
 	/**

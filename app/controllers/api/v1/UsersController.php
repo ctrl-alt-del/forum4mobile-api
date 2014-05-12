@@ -21,8 +21,8 @@ class UsersController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function store()
-	{
+	public function store() {
+
 		$rules = array(
 			'name'	   => 'required|alphaNum|min:5',
 			'email'    => 'required|email', 
@@ -67,10 +67,10 @@ class UsersController extends \BaseController {
 		$user->uuid 		= uniqid("", true);
 		$user->name  		= Input::get('name');
 		$user->email   		= Input::get('email');
-		$user->product_id 	= Input::get('product_id');
-		$user->helpful    	= Input::get('helpful');
+		$user->password   	= Hash::make(Input::get('password'));
 
-		if ($user->isSaved()) {
+
+		if ($user->save()) {
 			return Response::json(array(
 				'success'   => true,
 				'error'     => false,

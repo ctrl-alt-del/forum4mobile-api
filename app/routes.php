@@ -26,8 +26,7 @@ Route::group(
 
 	function() {
 
-		Route::get('/', function()
-		{
+		Route::get('/', function() {
 			return 'Welcome to <b>forum4mobile-api</b> demo version 01';
 		});
 
@@ -38,7 +37,8 @@ Route::group(
         // Route::get('users/{id}', array('before' => 'auth.users', 'uses' => 'UsersController@show'));
 
 		Route::resource('topics', 'TopicsController');
-		Route::resource('responses', 'ResponsesController');
+		Route::resource('concerns', 'ConcernsController');
+		Route::resource('reviews', 'ReviewsController');
 		Route::resource('votes', 'VotesController');
 	});
 

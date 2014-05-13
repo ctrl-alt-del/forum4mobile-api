@@ -89,6 +89,65 @@ class ReviewsController extends \BaseController {
 	 * @return Response
 	 */
 	public function update($id) {
+		$rules = array(
+			'topic_id'    => 'required', 
+			'content' => 'required',
+			'user_id' => 'required'
+			);
+
+		// run the validation rules on the inputs from the form
+		$validator = Validator::make(Input::all(), $rules);
+
+		// if the validator fails, redirect back to the form
+		if ($validator->fails()) {
+			return Response::json(array(
+				'success'   => false,
+				'error'     => true,
+				'type'      => '403',
+				'message'   => $validator->message()->all(),
+				));
+		}
+		
+		// store
+		$review = Review::find($id);
+		if ($review == null) {
+			return Response::json(array(
+				'success'   => false,
+				'error'     => true,
+				'type'      => '403',
+				'message'   => 'cannot find this review',
+				));
+		}
+
+		if ($review->user_id != Input::get('user_id')) {
+			return Response::json(array(
+				'success'   => false,
+				'error'     => true,
+				'type'      => '403',
+				'message'   => 'you are not the author',
+				));
+		}
+
+		$review->topic_id = Input::get('topic_id');
+		$review->content   	= Input::get('content');
+		$review->user_id   	= Input::get('user_id');
+		
+
+		if ($review->save()) {
+			return Response::json(array(
+				'success'   => true,
+				'error'     => false,
+				'type'      => '201',
+				'message'   => 'review has updated',
+				));
+		} else {
+			return Response::json(array(
+				'success'   => false,
+				'error'     => true,
+				'type'      => '403',
+				'message'   => 'cannot update new review',
+				));
+		}
 	}
 
 

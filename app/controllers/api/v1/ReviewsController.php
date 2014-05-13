@@ -68,6 +68,18 @@ class ReviewsController extends \BaseController {
 	 * @return Response
 	 */
 	public function show($id) {
+		$review = Review::find($id);
+		if ($review != null) {
+			return Response::json($review);	
+		} else {
+			return Response::json(array(
+				'success'   => false,
+				'error'     => true,
+				'type'      => '403',
+				'message'   => 'cannot find this topic',
+				));
+		}
+		
 	}
 
 	/**

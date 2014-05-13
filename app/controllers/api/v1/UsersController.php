@@ -115,7 +115,62 @@ class UsersController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		//
+		$rules = array(
+			'name'	   => 'required|alphaNum|min:5',
+			'email'    => 'required|email', 
+			'password' => 'required|alphaNum|min:6' 
+			);
+
+		// run the validation rules on the inputs from the form
+		$validator = Validator::make(Input::all(), $rules);
+
+		// if the validator fails, redirect back to the form
+		if ($validator->fails()) {
+			return Response::json(array(
+				'success'   => false,
+				'error'     => true,
+				'type'      => '403',
+				'message'   => $validator->message()->all(),
+				));
+		}
+		
+		if ($userWithGivenEmail == null) {
+			return Response::json(array(
+				'success'   => false,
+				'error'     => true,
+				'type'      => '403',
+				'message'   => 'Email used',
+				));
+		}
+
+		// store
+		$user = User::find($id);
+		if ($user == null) {
+			return Response::json(array(
+				'success'   => false,
+				'error'     => true,
+				'type'      => '403',
+				'message'   => 'no user',
+				));
+		}
+
+		$user->name  		= Input::get('name');
+
+		if ($user->save()) {
+			return Response::json(array(
+				'success'   => true,
+				'error'     => false,
+				'type'      => '201',
+				'message'   => ' user has updated',
+				));
+		} else {
+			return Response::json(array(
+				'success'   => false,
+				'error'     => true,
+				'type'      => '403',
+				'message'   => 'cannot update user',
+				));
+		}
 	}
 
 

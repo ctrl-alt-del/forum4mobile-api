@@ -75,6 +75,17 @@ class VotesController extends \BaseController {
 	 * @return Response
 	 */
 	public function show($id) {
+		$topic = Vote::find($id);
+		if ($topic != null) {
+			return Response::json($topic);	
+		} else {
+			return Response::json(array(
+				'success'   => false,
+				'error'     => true,
+				'type'      => '403',
+				'message'   => 'cannot find this vote',
+				));
+		}
 		
 	}
 

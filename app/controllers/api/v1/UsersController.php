@@ -184,4 +184,48 @@ class UsersController extends \BaseController {
 	{
 		//
 	}
+
+	public function doLogin() {
+
+		$rules = array(
+			'email'    => 'required|email', // make sure the email is an actual email
+			'password' => 'required' // password can only be alphanumeric and has to be greater than 3 characters
+			);
+
+		// run the validation rules on the inputs from the form
+		$validator = Validator::make(Input::all(), $rules);
+
+		// if the validator fails, redirect back to the form
+		if ($validator->fails()) {
+			return Response::json(array(
+				'error'     => true,
+				'type'      => '400',
+				'message'   => $validator->message()->all(),
+				));
+		} else {
+
+			// create our user data for the authentication
+			$userdata = array(
+				'email' 	=> Input::get('email'),
+				'password' 	=> Input::get('password')
+				);
+
+			// attempt to do the login
+			if (Auth::attempt($userdata)) {
+				return Response::json(array(
+					'error'     => false,
+					'type'      => '200',
+					'message'   => 'user login successful',
+					'uuid'	=> Auth::user()->uuid,
+					));
+			} else {	 	
+				return Response::json(array(
+					'error'     => true,
+					'type'      => '400',
+					'message'   => 'unable to login; information is wrong',
+					));
+			}
+
+		}
+	}
 }

@@ -228,4 +228,24 @@ class UsersController extends \BaseController {
 
 		}
 	}
+
+	public function doLogout() {
+		//TODO: need to find out how to authenticate app,
+		//		it always go through the 401 route right now
+		if (Auth::check()) {
+    		Auth::logout(); // log the user out of our application
+    		return Response::json(array(
+    			'success'   => true,
+    			'error'     => false,
+    			'type'      => '200',
+    			'message'   => 'user logout success',
+    			));
+    	} else {
+    		return Response::json(array(
+    			'error'     => true,
+    			'type'      => '401',
+    			'message'   => 'user is not login',
+    			));
+    	}
+    }
 }
